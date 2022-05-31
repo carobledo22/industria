@@ -1,0 +1,11 @@
+
+{% block content_body %}
+    <h1> Iniciar Sesion </h1>
+    {#form_start() y form_end() renderizan las etiquetas form de apertura y cierre#}
+    {{ form_start(loginForm) }}
+        {#form_widget() renderiza los campos#}
+        {{ form_widget(loginForm) }}
+        <button type="submit" class="btn btn-primary">Login</button>
+    {{ form_end(loginForm) }}
+    
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'base.html.twig'%}
+
+{% block title %} Login {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link rel="stylesheet" href="{{ asset('css/ie.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/1140.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/fonts.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/normalize.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/styles-1.0.2.css') }}">
+{% endblock %}
+
+
+
+{% block body %}
+    <tittle>Ingreso al sistema</tittle>
+    
+    <form class="form-signin" method="post">
+        {% if error %}
+            <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+        <div><label for="inputUsuario" class="sr-only">User</label>
+        <input type="text" value="{{ last_username }}" name="usuario" id="usuario" class="form-control" placeholder="Usuario" required autofocus></div>
+        <div><label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" name="clave" id="inputClave" class="form-control" placeholder="Clave" required></div>
+
+        <input type="hidden" name="_csrf_token"
+            {#la funcion csrf_token() es una funcion especial de twig, recibe
+            como argumento una cadena que es el nombre del token y podria ser cualquiera#}
+            value="{{ csrf_token('authenticate') }}">
+
+        <div class="checkbox mb-3">
+            <label>
+                <input type="checkbox" name="_remember_me"> Remember me
+                {#cuando el usuario chequee un checkbox vuyo nombre sea _remember_me
+                una cookie "remember me" será seteada para iniciar la sesion del
+                usuario si su sesion expira#}
+            </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">
+            Sign in
+        </button>
+        <div>
+    </form>
+{% endblock %}

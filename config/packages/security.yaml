@@ -1,0 +1,50 @@
+security:
+    encoders:
+        App\Entity\Usuario:
+            algorithm: auto
+            #algoritmo utilizado para la codificación de 
+
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    providers:
+        # used to reload user from session & other features (e.g. switch_user)
+        # Cuando recargamos, el user provider toma el objeto Usuario de la sesión 
+        # y usa su id para consultar por un objeto Usuario nuevo si fue modificado en la DB.
+        # La informacion de autenticacion del usuario se almacena en la sesion;
+        # al inicio de cada solicitud, esa info es cargada desde la sesion.
+        app_user_provider:
+            entity:
+                class: App\Entity\Usuario
+                property: idUsuario
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            anonymous: lazy
+            provider: app_user_provider
+            guard:
+                #hace que symfony al principio de cada solicitud
+                #llame al método supports() de nuestro autenticador
+                authenticators:
+                    - App\Security\LoginFormAuthenticator
+            logout:
+                path: app_logout
+            
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 2592000
+                #30 dias en segundos
+
+        # activate different ways to authenticate
+        # https://symfony.com/doc/current/security.html#firewalls-authentication
+
+        # https://symfony.com/doc/current/security/impersonating_user.html
+        # switch_user: true
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+        #path es una expresion regular; las URL que empiezan con /admin 
+        #requieren de un rol llamado "ROLE_ADMMIN"; deniega el acceso en el controlador
+        # - { path: ^/admin, roles: ROLE_ADMIN }
+        # - { path: ^/profile, roles: ROLE_USER }
